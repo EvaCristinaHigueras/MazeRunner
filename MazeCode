@@ -1,0 +1,65 @@
+//Eva Cristina Higueras
+#include <Arduino.h>
+#include <MeMCore.h>
+
+MeUltrasonicSensor ultraSonic(PORT_3);
+MeDCMotor motor1(M1);
+MeDCMotor motor2(M2);
+
+
+void moveForward(int d){
+  motor1.run(-100); 
+  motor2.run(100); 
+  delay(d);
+ }
+ void moveBackward(int d){
+  motor1.run(100); 
+  motor2.run(-100); 
+  delay(d);
+ }
+ void turnLeft(int d){
+   motor1.run (0);
+  motor2.run (200);
+  delay(d);
+ }
+ void turnRight(int d){
+   motor1.run (-200);
+  motor2.run (0);
+  delay(d);
+ }
+ void stop(int d){
+ motor1.stop();
+ motor2.stop();
+ }
+int distance = ultraSonic.distanceCm();
+
+void setup() {
+  // put your setup code here, to run once:
+pinMode(A7,INPUT);
+  while(analogRead(A7) !=0);
+  Serial.begin(9600);
+ 
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+ distance = ultraSonic.distanceCm();
+
+
+if(distance>7){
+  moveForward(700);
+  turnLeft(500);
+  moveBackward(300);
+  turnRight(400);
+  moveForward(700);
+}
+else if(distance<7){
+  moveBackward(500);
+  turnLeft(500);
+  moveForward(700);
+ }
+else{
+ moveForward(100);
+} 
+}
+
